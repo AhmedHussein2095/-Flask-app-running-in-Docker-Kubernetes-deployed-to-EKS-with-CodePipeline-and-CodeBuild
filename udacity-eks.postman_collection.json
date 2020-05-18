@@ -1,0 +1,864 @@
+{
+	"info": {
+		"_postman_id": "c3af5cf5-7bb5-478f-a9c0-f0470ec7ea27",
+		"name": "udacity-eks",
+		"description": "Udacity Fullstack Nanodegree Project 4: Deployment to EKS using Docker and Kubernetes.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "21081513-3562-4900-89fe-40496a36da76",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is 'Healthy'\", function () {",
+									"    var json = pm.response.json();",
+									"    pm.expect(json).to.be.a('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_local}}/",
+							"host": [
+								"{{host_local}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Health check"
+					},
+					"response": [
+						{
+							"name": "/",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "10"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/0.16.0 Python/3.7.4"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 06:33:21 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "\"Healthy\""
+						}
+					]
+				},
+				{
+					"name": "/auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa8a0423-3df8-47bb-b732-fe7dd0e711c1",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains 'token' string\", function () {",
+									"    var json = pm.response.json();",
+									"    pm.expect(json.token).to.be.a('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_local}}/auth",
+							"host": [
+								"{{host_local}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "Authentication endpoint, responds with a JWT token."
+					},
+					"response": [
+						{
+							"name": "/auth",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"test\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "178"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/0.16.0 Python/3.7.4"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 06:42:34 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYwNDY1NTQsIm5iZiI6MTU3NDgzNjk1NCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.Vkaq8Hs5SRs_u9wnxYYBoYLn4OHHsaLDaRktO6DGaig\"\n}"
+						}
+					]
+				},
+				{
+					"name": "/contents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89050e0b-97c2-447c-a261-813ef64ebbd4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains decoded token\", function () {",
+									"    var json = pm.response.json();",
+									"    pm.expect(json.email).to.be.a('string')",
+									"    pm.expect(json.email).to.have.string('@')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYwNDY1NTQsIm5iZiI6MTU3NDgzNjk1NCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.Vkaq8Hs5SRs_u9wnxYYBoYLn4OHHsaLDaRktO6DGaig",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_local}}/contents",
+							"host": [
+								"{{host_local}}"
+							],
+							"path": [
+								"contents"
+							]
+						},
+						"description": "Accepts an Authorization:Bearer Token. Responds with the decoded token."
+					},
+					"response": [
+						{
+							"name": "/contents",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYwNDY1NTQsIm5iZiI6MTU3NDgzNjk1NCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.Vkaq8Hs5SRs_u9wnxYYBoYLn4OHHsaLDaRktO6DGaig",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/contents",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"contents"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/0.16.0 Python/3.7.4"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 06:42:52 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"test@test.com\",\n    \"exp\": 1576046554,\n    \"nbf\": 1574836954\n}"
+						}
+					]
+				}
+			],
+			"description": "Locally running app",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Docker",
+			"item": [
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "21081513-3562-4900-89fe-40496a36da76",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is 'Healthy'\", function () {",
+									"    var json = pm.response.json();",
+									"    pm.expect(json).to.be.a('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_container}}/",
+							"host": [
+								"{{host_container}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Health check"
+					},
+					"response": [
+						{
+							"name": "/",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "10"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/0.16.0 Python/3.7.4"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 06:33:21 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "\"Healthy\""
+						}
+					]
+				},
+				{
+					"name": "/auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa8a0423-3df8-47bb-b732-fe7dd0e711c1",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains 'token' string\", function () {",
+									"    var json = pm.response.json();",
+									"    pm.expect(json.token).to.be.a('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_container}}/auth",
+							"host": [
+								"{{host_container}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "Authentication endpoint, responds with a JWT token."
+					},
+					"response": [
+						{
+							"name": "/auth",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"test\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "178"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/0.16.0 Python/3.7.4"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 06:42:34 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYwNDY1NTQsIm5iZiI6MTU3NDgzNjk1NCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.Vkaq8Hs5SRs_u9wnxYYBoYLn4OHHsaLDaRktO6DGaig\"\n}"
+						}
+					]
+				},
+				{
+					"name": "/contents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89050e0b-97c2-447c-a261-813ef64ebbd4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains decoded token\", function () {",
+									"    var json = pm.response.json();",
+									"    pm.expect(json.email).to.be.a('string')",
+									"    pm.expect(json.email).to.have.string('@')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYwNTIwMjYsIm5iZiI6MTU3NDg0MjQyNiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.4M4HupkO4T85nzH3f5TXQA1tkd3w5IrtaoZQX3tHZSM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_container}}/contents",
+							"host": [
+								"{{host_container}}"
+							],
+							"path": [
+								"contents"
+							]
+						},
+						"description": "Accepts an Authorization:Bearer Token. Responds with the decoded token."
+					},
+					"response": [
+						{
+							"name": "/contents",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYwNDY1NTQsIm5iZiI6MTU3NDgzNjk1NCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.Vkaq8Hs5SRs_u9wnxYYBoYLn4OHHsaLDaRktO6DGaig",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/contents",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"contents"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/0.16.0 Python/3.7.4"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 06:42:52 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"test@test.com\",\n    \"exp\": 1576046554,\n    \"nbf\": 1574836954\n}"
+						}
+					]
+				}
+			],
+			"description": "App running on Gunicorn in a Docker container.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "EKS",
+			"item": [
+				{
+					"name": "/",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://a4d5c5647129311ea8d420a22cf9d500-2039112863.eu-west-1.elb.amazonaws.com/",
+							"protocol": "http",
+							"host": [
+								"a4d5c5647129311ea8d420a22cf9d500-2039112863",
+								"eu-west-1",
+								"elb",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Health check"
+					},
+					"response": []
+				},
+				{
+					"name": "/auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa8a0423-3df8-47bb-b732-fe7dd0e711c1",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains 'token' string\", function () {",
+									"    var json = pm.response.json();",
+									"    pm.expect(json.token).to.be.a('string')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://a4d5c5647129311ea8d420a22cf9d500-2039112863.eu-west-1.elb.amazonaws.com/auth",
+							"protocol": "http",
+							"host": [
+								"a4d5c5647129311ea8d420a22cf9d500-2039112863",
+								"eu-west-1",
+								"elb",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "Authentication endpoint, responds with a JWT token."
+					},
+					"response": [
+						{
+							"name": "/auth",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"test\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "178"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/0.16.0 Python/3.7.4"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 06:42:34 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYwNDY1NTQsIm5iZiI6MTU3NDgzNjk1NCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.Vkaq8Hs5SRs_u9wnxYYBoYLn4OHHsaLDaRktO6DGaig\"\n}"
+						}
+					]
+				},
+				{
+					"name": "/contents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89050e0b-97c2-447c-a261-813ef64ebbd4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains decoded token\", function () {",
+									"    var json = pm.response.json();",
+									"    pm.expect(json.email).to.be.a('string')",
+									"    pm.expect(json.email).to.have.string('@')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYyNTk0NTMsIm5iZiI6MTU3NTA0OTg1MywiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.0ND39magh6HmSvYTQgZpVeRDFZepidPomAxFfjgr-7c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://a4d5c5647129311ea8d420a22cf9d500-2039112863.eu-west-1.elb.amazonaws.com/contents",
+							"protocol": "http",
+							"host": [
+								"a4d5c5647129311ea8d420a22cf9d500-2039112863",
+								"eu-west-1",
+								"elb",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"contents"
+							]
+						},
+						"description": "Accepts an Authorization:Bearer Token. Responds with the decoded token."
+					},
+					"response": [
+						{
+							"name": "/contents",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzYwNDY1NTQsIm5iZiI6MTU3NDgzNjk1NCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.Vkaq8Hs5SRs_u9wnxYYBoYLn4OHHsaLDaRktO6DGaig",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/contents",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"contents"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/0.16.0 Python/3.7.4"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Nov 2019 06:42:52 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"test@test.com\",\n    \"exp\": 1576046554,\n    \"nbf\": 1574836954\n}"
+						}
+					]
+				}
+			],
+			"description": "Endpoints running on EKS",
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "60bd49fb-72cc-4ac4-83d6-284d34a93f1f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "35b97e41-c3e1-4564-9c4e-6f2f585785a8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3661aa65-9e2b-4ce0-9e1f-bdb205108bb0",
+			"key": "host_local",
+			"value": "http://127.0.0.1:8080",
+			"type": "string"
+		},
+		{
+			"id": "0aee2fa0-166e-4396-8a7d-9a1377d96f52",
+			"key": "host_container",
+			"value": "http://0.0.0.0:80",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
